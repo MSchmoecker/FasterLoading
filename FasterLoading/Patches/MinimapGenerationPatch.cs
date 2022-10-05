@@ -10,6 +10,7 @@ namespace FasterLoading.Patches {
     /// </summary>
     [HarmonyPatch(typeof(Minimap), nameof(Minimap.GenerateWorldMap))]
     public static class MinimapGenerationPatch {
+        [HarmonyPriority(Priority.First)]
         private static bool Prefix(Minimap __instance) {
             // try to load existing textures
             if (File.Exists(MinimapTextureFilePath())) {
@@ -21,6 +22,7 @@ namespace FasterLoading.Patches {
             return true;
         }
 
+        [HarmonyPriority(Priority.Last)]
         private static void Postfix(Minimap __instance) {
             if (!File.Exists(MinimapTextureFilePath())) {
                 // write computed textures to file
